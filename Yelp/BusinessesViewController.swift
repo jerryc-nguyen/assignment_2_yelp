@@ -23,11 +23,13 @@ class BusinessesViewController: UIViewController {
         self.tableView.estimatedRowHeight = 120
         
         Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            self.tableView.reloadData()
+            if businesses != nil {
+                self.businesses = businesses
+                self.tableView.reloadData()
+            }
         })
     
-/* Example of Yelp search with more search options specified
+/* Example of Yelp search with moreearch options specified
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             
@@ -59,6 +61,15 @@ class BusinessesViewController: UIViewController {
 extension BusinessesViewController : FiltersViewControllerDelegate {
     func filtersViewController(filtersViewController: FiltersViewController, didFiltersChanged value: [String : AnyObject]) {
         print("Received signal from filter controller: ", value)
+        
+        let filteredCategories = value["categories"] as! [String]
+        
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: filteredCategories, deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+            if businesses != nil {
+                self.businesses = businesses
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
