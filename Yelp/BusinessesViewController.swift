@@ -44,16 +44,22 @@ class BusinessesViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let navigationController = segue.destinationViewController as! UINavigationController
+        let filtersVC = navigationController.topViewController as! FiltersViewController
+        
+        filtersVC.delegate = self
     }
-    */
 
+}
+
+extension BusinessesViewController : FiltersViewControllerDelegate {
+    func filtersViewController(filtersViewController: FiltersViewController, didFiltersChanged value: [String : AnyObject]) {
+        print("Received signal from filter controller: ", value)
+    }
 }
 
 extension BusinessesViewController : UITableViewDataSource, UITableViewDelegate {
@@ -65,6 +71,7 @@ extension BusinessesViewController : UITableViewDataSource, UITableViewDelegate 
         let cell = self.tableView.dequeueReusableCellWithIdentifier("BusinessCell") as! BusinessCell
         
         cell.business = businesses[indexPath.row]
+
         return cell
     }
 }
