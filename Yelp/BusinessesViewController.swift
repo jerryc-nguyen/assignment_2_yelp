@@ -13,6 +13,13 @@ class BusinessesViewController: UIViewController {
     var businesses = [Business]()
     
     var filteredValues = NSDictionary()
+    var searchTerm = ""
+    
+    var isMoreDataLoading = false
+    
+    var loadingMoreView:InfiniteScrollActivityView?
+    
+    var currentPage = 1
     
     @IBOutlet var searchBar: UISearchBar!
     
@@ -29,6 +36,16 @@ class BusinessesViewController: UIViewController {
         
         self.searchBar.delegate = self
         self.searchBar.showsCancelButton = true
+        
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.hidden = true
+        tableView.addSubview(loadingMoreView!)
+        
+        var insets = tableView.contentInset;
+        insets.bottom += InfiniteScrollActivityView.defaultHeight;
+        tableView.contentInset = insets
         
         Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
             if businesses != nil {
@@ -53,27 +70,32 @@ class BusinessesViewController: UIViewController {
         filtersVC.delegate = self
     }
     
-    func performSearch(searchTerm: String) {
+    func performSearch(callBack: (() -> Void)? = nil) {
         let filteredCategories = filteredValues["categories"] as? [String]
         let selectedDistance = filteredValues["distance"] as? Int
         let sortBy = (filteredValues["sortBy"] as? Int) ?? YelpSortMode.BestMatched.rawValue
         let isDeal = (filteredValues["isDeal"] as? Int) == 1
-        
-        Business.searchWithTerm(searchTerm, sort: YelpSortMode(rawValue: sortBy), categories: filteredCategories, deals: isDeal, distanceInMeter: selectedDistance) { (businesses: [Business]!, error: NSError!) -> Void in
-            if businesses != nil {
+        let offset = YelpClient.responsePerPage * currentPage
+
+        Business.searchWithTerm(searchTerm, sort: YelpSortMode(rawValue: sortBy), categories: filteredCategories, deals: isDeal, distanceInMeter: selectedDistance, offset: offset) { (businesses: [Business]!, error: NSError!) -> Void in
+            if self.isMoreDataLoading {
+                for business in businesses {
+                    self.businesses.append(business)
+                }
+            } else {
                 self.businesses = businesses
-                self.tableView.reloadData()
             }
+            callBack?()
+            self.tableView.reloadData()
         }
     }
-
 }
 
 extension BusinessesViewController : FiltersViewControllerDelegate {
     func filtersViewController(filtersViewController: FiltersViewController, didFiltersChanged value: [String : AnyObject]) {
         print("Received signal from filter controller: ", value)
         filteredValues = value
-        performSearch("")
+        performSearch()
     }
 }
 
@@ -94,7 +116,9 @@ extension BusinessesViewController : UITableViewDataSource, UITableViewDelegate 
 
 extension BusinessesViewController : UISearchBarDelegate {
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        performSearch(searchText)
+        currentPage = 1
+        searchTerm = searchText
+        performSearch()
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -102,3 +126,29 @@ extension BusinessesViewController : UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 }
+
+extension BusinessesViewController : UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.dragging) {
+                isMoreDataLoading = true
+                currentPage += 1
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView!.frame = frame
+                loadingMoreView!.startAnimating()
+                performSearch() { () -> Void in
+                    self.isMoreDataLoading = false
+                    self.loadingMoreView!.stopAnimating()
+                }
+            }
+        }
+    }
+}
+

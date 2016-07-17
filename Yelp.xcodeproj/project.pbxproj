@@ -25,6 +25,7 @@
 		42F32ECC1D3B61D200C83AFA /* DistanceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42F32ECA1D3B61D200C83AFA /* DistanceTableViewCell.xib */; };
 		42F32ECE1D3B7CEC00C83AFA /* CategoryHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42F32ECD1D3B7CEC00C83AFA /* CategoryHeaderView.xib */; };
 		42F32ED01D3B825C00C83AFA /* CategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F32ECF1D3B825C00C83AFA /* CategoryHeaderView.swift */; };
+		42F32ED21D3C1E6500C83AFA /* InfiniteScrollActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F32ED11D3C1E6500C83AFA /* InfiniteScrollActivityView.swift */; };
 		90B718C590BD546DEFEF0D61 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA3C5CF4FD317D72ABE2AAC4 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		42F32ECA1D3B61D200C83AFA /* DistanceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DistanceTableViewCell.xib; sourceTree = "<group>"; };
 		42F32ECD1D3B7CEC00C83AFA /* CategoryHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryHeaderView.xib; sourceTree = "<group>"; };
 		42F32ECF1D3B825C00C83AFA /* CategoryHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryHeaderView.swift; sourceTree = "<group>"; };
+		42F32ED11D3C1E6500C83AFA /* InfiniteScrollActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteScrollActivityView.swift; sourceTree = "<group>"; };
 		97D8B2E3FFD1AF4F4A707E47 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AA3C5CF4FD317D72ABE2AAC4 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBD540129B10DFE60E8C24E2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 			children = (
 				42F32EC41D3B5B6300C83AFA /* FilterViews */,
 				42F32EB41D39E41400C83AFA /* BusinessCell.swift */,
+				42F32ED11D3C1E6500C83AFA /* InfiniteScrollActivityView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42F32ED21D3C1E6500C83AFA /* InfiniteScrollActivityView.swift in Sources */,
 				42F32EB51D39E41400C83AFA /* BusinessCell.swift in Sources */,
 				42F32ED01D3B825C00C83AFA /* CategoryHeaderView.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
