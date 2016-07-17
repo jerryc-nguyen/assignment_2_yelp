@@ -41,8 +41,13 @@ class FiltersViewController: UIViewController {
 
     weak var delegate: FiltersViewControllerDelegate?
     
+    // show hide logic
     var isSortByShowed: Bool = false
     var isDistanceShowed: Bool = false
+    
+    // selected filter value
+    var selectedDistanceIndex:Int = 0
+    var selectedSortIndex:Int = 0
     
     // header config
     let distanceHeaderViewHeight: CGFloat = 70
@@ -300,12 +305,13 @@ extension FiltersViewController : UITableViewDataSource {
             let cell = tableView.dequeueReusableCellWithIdentifier(DistanceTableViewCell.ClassName) as! DistanceTableViewCell
             let distanceItem = distanceOptions[indexPath.row]
             cell.leftLabel.text = distanceItem["name"] as? String
-            
+            cell.checked = indexPath.row == selectedDistanceIndex
             return cell
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier(DistanceTableViewCell.ClassName) as! DistanceTableViewCell
             let sortByItem = sortByOptions[indexPath.row]
             cell.leftLabel.text = sortByItem["name"] as? String
+            cell.checked = indexPath.row == selectedSortIndex
             return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
@@ -332,11 +338,21 @@ extension FiltersViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionTitle = sectionTitles[section]! as String
         switch (section) {
-        case 1, 2:
+        case 1:
             let view = DistanceHeaderView.initFromNib()
             view.sectionIndex = section
             view.headerTitle.text = sectionTitle
             view.delegate = self
+            let btnTitle = distanceOptions[selectedDistanceIndex]["name"] as? String
+            view.selectedItemBtn.setTitle(btnTitle, forState: .Normal)
+            return view
+        case 2:
+            let view = DistanceHeaderView.initFromNib()
+            view.sectionIndex = section
+            view.headerTitle.text = sectionTitle
+            view.delegate = self
+            let btnTitle = sortByOptions[selectedSortIndex]["name"] as? String
+            view.selectedItemBtn.setTitle(btnTitle, forState: .Normal)
             return view
         default:
             let view = CategoryHeaderView.initFromNib()
@@ -347,17 +363,21 @@ extension FiltersViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         if indexPath.section == 1 {
-            // Set title
-//            distanceHeaderView.setTitle("abc")
             isDistanceShowed = false
-            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
+            selectedDistanceIndex = indexPath.row
+            self.tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Fade)
+        } else if indexPath.section == 2 {
+            selectedSortIndex = indexPath.row
+            isSortByShowed = false
+            self.tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: .Fade)
         }
     }
 }
 
-extension FiltersViewController: DistanceHeaderViewDeletage {
-    func distanceHeaderViewDeletage(headerView: DistanceHeaderView, didSelectSection value: Int) {
+extension FiltersViewController: DistanceHeaderViewDelegate {
+    func distanceHeaderViewDelegate(headerView: DistanceHeaderView, didSelectSection value: Int) {
         
         if value == 1 {
             isDistanceShowed = !isDistanceShowed

@@ -25,17 +25,27 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xmg-UA-BsS">
+                        <rect key="frame" x="297" y="12" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="1TA-i8-pTl"/>
+                            <constraint firstAttribute="height" constant="20" id="v3i-ii-clA"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="eVJ-7R-oil" secondAttribute="bottom" constant="5" id="37x-h0-5hA"/>
                     <constraint firstItem="NXr-V5-pIi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="M3p-UY-T5s"/>
+                    <constraint firstItem="Xmg-UA-BsS" firstAttribute="centerY" secondItem="NXr-V5-pIi" secondAttribute="centerY" id="Nlx-uQ-zEw"/>
                     <constraint firstItem="eVJ-7R-oil" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="Q62-j8-dnt"/>
                     <constraint firstItem="eVJ-7R-oil" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="c57-B4-lNC"/>
+                    <constraint firstAttribute="trailing" secondItem="Xmg-UA-BsS" secondAttribute="trailing" constant="8" id="uk7-jE-rNF"/>
                     <constraint firstItem="NXr-V5-pIi" firstAttribute="centerY" secondItem="eVJ-7R-oil" secondAttribute="centerY" id="upU-IM-7lY"/>
                     <constraint firstAttribute="trailing" secondItem="eVJ-7R-oil" secondAttribute="trailing" constant="5" id="xnn-c3-thm"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="checkImageView" destination="Xmg-UA-BsS" id="xz3-ZD-pbH"/>
                 <outlet property="leftLabel" destination="NXr-V5-pIi" id="mPA-6T-GCA"/>
             </connections>
             <point key="canvasLocation" x="212.5" y="157"/>

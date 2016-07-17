@@ -11,12 +11,28 @@ import UIKit
 class DistanceTableViewCell: UITableViewCell {
     static let ClassName = "DistanceTableViewCell"
     
+    @IBOutlet weak var checkImageView: UIImageView!
+    
     @IBOutlet weak var leftLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        checkImageView.layer.backgroundColor = UIColor.lightGrayColor().CGColor
+        checkImageView.layer.cornerRadius = checkImageView.frame.size.width / 2
+        checkImageView.clipsToBounds = true
     }
-
+    
+    var checked: Bool! {
+        didSet {
+            if (checked != nil && checked)  {
+                checkImageView.image =  UIImage(named:"checked")
+                checkImageView.layer.backgroundColor = UIColor.whiteColor().CGColor
+            } else {
+                checkImageView.image =  nil
+                checkImageView.layer.backgroundColor = UIColor.lightGrayColor().CGColor
+            }
+        }
+    }
     
 }
