@@ -54,7 +54,11 @@ class BusinessesViewController: UIViewController {
             }
         })
     }
-
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -128,7 +132,6 @@ extension BusinessesViewController : UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchBar.text = ""
         searchBar.resignFirstResponder()
     }
 }

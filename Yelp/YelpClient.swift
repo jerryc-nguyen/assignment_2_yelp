@@ -71,7 +71,7 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         }
         
         if deals != nil {
-            parameters["deals_filter"] = deals!
+            parameters["deals_filter"] = deals! ? "true" : "false"
         }
         
         if distanceInMeter != nil {
