@@ -9,7 +9,9 @@
 import UIKit
 
 class DealCell: UITableViewCell {
-
+    
+    static let ClassName:String = "DealCell"
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

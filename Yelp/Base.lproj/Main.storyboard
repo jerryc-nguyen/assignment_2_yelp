@@ -181,58 +181,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DistanceCell" rowHeight="68" id="Pi8-YI-xO7" customClass="DistanceCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="96" width="320" height="68"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pi8-YI-xO7" id="81h-xa-td6">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sU4-pe-MtL">
-                                                    <rect key="frame" x="8" y="15" width="304" height="34"/>
-                                                    <segments>
-                                                        <segment title="Auto"/>
-                                                        <segment title="0.3 mi"/>
-                                                        <segment title="1 mi"/>
-                                                        <segment title="3 mi"/>
-                                                        <segment title="5 mi"/>
-                                                    </segments>
-                                                </segmentedControl>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="sU4-pe-MtL" firstAttribute="top" secondItem="81h-xa-td6" secondAttribute="top" constant="15" id="56N-Gj-YZY"/>
-                                                <constraint firstAttribute="bottom" secondItem="sU4-pe-MtL" secondAttribute="bottom" constant="19" id="NSa-AT-akW"/>
-                                                <constraint firstItem="sU4-pe-MtL" firstAttribute="leading" secondItem="81h-xa-td6" secondAttribute="leading" constant="8" id="caA-lJ-5Vw"/>
-                                                <constraint firstAttribute="trailing" secondItem="sU4-pe-MtL" secondAttribute="trailing" constant="8" id="uMT-Nr-nMz"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SortByCell" rowHeight="68" id="5ib-WT-wxM" customClass="SortByCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="164" width="320" height="68"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5ib-WT-wxM" id="dwq-Ry-qIB">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="J10-4E-ZSu">
-                                                    <rect key="frame" x="8" y="15" width="304" height="38"/>
-                                                    <segments>
-                                                        <segment title="Best Match"/>
-                                                        <segment title="Distance"/>
-                                                        <segment title="Highest rated"/>
-                                                    </segments>
-                                                </segmentedControl>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="J10-4E-ZSu" firstAttribute="leading" secondItem="dwq-Ry-qIB" secondAttribute="leading" constant="8" id="BdZ-hS-jLr"/>
-                                                <constraint firstAttribute="trailing" secondItem="J10-4E-ZSu" secondAttribute="trailing" constant="8" id="Um9-EI-0LF"/>
-                                                <constraint firstAttribute="bottom" secondItem="J10-4E-ZSu" secondAttribute="bottom" constant="15" id="Wni-zG-aMP"/>
-                                                <constraint firstItem="J10-4E-ZSu" firstAttribute="top" secondItem="dwq-Ry-qIB" secondAttribute="top" constant="15" id="lE3-dF-f0m"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchCell" rowHeight="68" id="FSg-hL-XEY" customClass="SwitchCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="232" width="320" height="68"/>
+                                        <rect key="frame" x="0.0" y="96" width="320" height="68"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FSg-hL-XEY" id="fph-ji-VuT">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>

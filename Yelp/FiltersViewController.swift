@@ -18,22 +18,52 @@ class FiltersViewController: UIViewController {
     
     var switchStates = [Int: Bool]()
     
-    let filterSections: [Int: AnyObject] = [
-        0: ["name": "Offering a Deal"],
-        1: ["name": "Distance"],
-        2: ["name": "Sort by"],
-        3: ["name": "Category"]
+    let distanceOptions: [NSDictionary] = [
+        ["name": "Auto", "value": -1],
+        ["name": "0.3 miles", "value": 0.3],
+        ["name": "1 miles", "value": 1],
+        ["name": "3 miles", "value": 3],
+        ["name": "5 miles", "value": 5]
     ]
     
+    let sortByOptions: [NSDictionary] = [
+        ["name" : "Best match", "value": 1],
+        ["name" : "Distance", "value": 2],
+        ["name" : "Highest rated", "value": 3],
+    ]
+    
+    let sectionTitles: [Int: String] = [
+        0: "Offering a Deal",
+        1: "Distance",
+        2: "Sort by",
+        3: "Category"
+    ]
+
     weak var delegate: FiltersViewControllerDelegate?
+    
+    var isSortByShowed: Bool = false
+    var isDistanceShowed: Bool = false
+    
+    // header config
+    let distanceHeaderViewHeight: CGFloat = 70
+    
+    // cell config
+    let defaultFilterCellHeight: CGFloat = 45
+    let distanceTableViewCellHeight : CGFloat = 45
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerNibs()
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
         // Do any additional setup after loading the view.
+    }
+    
+    // register custom cells design from nib
+    func registerNibs() {
+        self.tableView.registerNib(UINib(nibName: DistanceTableViewCell.ClassName, bundle: NSBundle.mainBundle()), forCellReuseIdentifier: DistanceTableViewCell.ClassName)
     }
 
     override func didReceiveMemoryWarning() {
@@ -233,18 +263,32 @@ class FiltersViewController: UIViewController {
     }
 }
 
-extension FiltersViewController : UITableViewDataSource, UITableViewDelegate {
+extension FiltersViewController : UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return filterSections.count
+        return sectionTitles.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return section == 3 ? self.categories.count : 1
+        switch section {
+        case 1:
+            return isDistanceShowed ? distanceOptions.count : 0
+        case 2:
+            return isSortByShowed ? sortByOptions.count : 0
+        case 3:
+            return self.categories.count
+        default:
+            return 1
+        }
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.filterSections[section]!["name"] as? String
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 1:
+            return distanceTableViewCellHeight
+        default:
+            return defaultFilterCellHeight
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -253,9 +297,16 @@ extension FiltersViewController : UITableViewDataSource, UITableViewDelegate {
         case 0:
             return tableView.dequeueReusableCellWithIdentifier("DealCell") as! DealCell
         case 1:
-            return tableView.dequeueReusableCellWithIdentifier("DistanceCell") as! DistanceCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(DistanceTableViewCell.ClassName) as! DistanceTableViewCell
+            let distanceItem = distanceOptions[indexPath.row]
+            cell.leftLabel.text = distanceItem["name"] as? String
+            
+            return cell
         case 2:
-            return tableView.dequeueReusableCellWithIdentifier("SortByCell") as! SortByCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(DistanceTableViewCell.ClassName) as! DistanceTableViewCell
+            let sortByItem = sortByOptions[indexPath.row]
+            cell.leftLabel.text = sortByItem["name"] as? String
+            return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
             let category = categories[indexPath.row]
@@ -264,6 +315,57 @@ extension FiltersViewController : UITableViewDataSource, UITableViewDelegate {
             cell.delegate = self
             return cell
         }
+    }
+}
+
+extension FiltersViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch (section) {
+        case 1, 2:
+            return distanceHeaderViewHeight
+        default:
+            return 45
+        }
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sectionTitle = sectionTitles[section]! as String
+        switch (section) {
+        case 1, 2:
+            let view = DistanceHeaderView.initFromNib()
+            view.sectionIndex = section
+            view.headerTitle.text = sectionTitle
+            view.delegate = self
+            return view
+        default:
+            let view = CategoryHeaderView.initFromNib()
+            view.sectionIndex = section
+            view.headerTitle.text = sectionTitle
+            return view
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 1 {
+            // Set title
+//            distanceHeaderView.setTitle("abc")
+            isDistanceShowed = false
+            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
+        }
+    }
+}
+
+extension FiltersViewController: DistanceHeaderViewDeletage {
+    func distanceHeaderViewDeletage(headerView: DistanceHeaderView, didSelectSection value: Int) {
+        
+        if value == 1 {
+            isDistanceShowed = !isDistanceShowed
+        } else if value == 2 {
+            isSortByShowed = !isSortByShowed
+        }
+        
+        self.tableView.reloadSections(NSIndexSet(index: value), withRowAnimation: .Fade)
     }
 }
 
