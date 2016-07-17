@@ -78,15 +78,21 @@ class BusinessesViewController: UIViewController {
         let offset = YelpClient.responsePerPage * currentPage
 
         Business.searchWithTerm(searchTerm, sort: YelpSortMode(rawValue: sortBy), categories: filteredCategories, deals: isDeal, distanceInMeter: selectedDistance, offset: offset) { (businesses: [Business]!, error: NSError!) -> Void in
-            if self.isMoreDataLoading {
-                for business in businesses {
-                    self.businesses.append(business)
+            
+            if businesses != nil {
+                if self.isMoreDataLoading {
+                    for business in businesses {
+                        self.businesses.append(business)
+                    }
+                    callBack?()
+                } else {
+                    self.businesses = businesses
+                    
                 }
-            } else {
-                self.businesses = businesses
+                
+                self.tableView.reloadData()
             }
-            callBack?()
-            self.tableView.reloadData()
+            
         }
     }
 }
