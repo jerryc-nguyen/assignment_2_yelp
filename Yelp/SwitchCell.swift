@@ -35,7 +35,7 @@ class SwitchCell: UITableViewCell {
     @IBAction func onSwitch(sender: UISwitch) {
         print("Switch value changed!", sender.on)
         
-        delegate!.switchCell?(self, didChangeValue: switcher.on)
+        delegate!.switchCell?(self, didChangeValue: sender.on)
     }
     
     

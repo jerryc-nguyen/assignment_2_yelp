@@ -62,9 +62,11 @@ extension BusinessesViewController : FiltersViewControllerDelegate {
     func filtersViewController(filtersViewController: FiltersViewController, didFiltersChanged value: [String : AnyObject]) {
         print("Received signal from filter controller: ", value)
         
-        let filteredCategories = value["categories"] as! [String]
-        
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: filteredCategories, deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+        let filteredCategories = value["categories"] as? [String]
+        let selectedDistance = value["distance"] as? Int
+        let sortBy = value["sortBy"] as? Int
+        let isDeal = (value["isDeal"] as? Int) == 1
+        Business.searchWithTerm("Restaurants", sort: YelpSortMode(rawValue: sortBy!), categories: filteredCategories, deals: isDeal, distanceInMeter: selectedDistance) { (businesses: [Business]!, error: NSError!) -> Void in
             if businesses != nil {
                 self.businesses = businesses
                 self.tableView.reloadData()

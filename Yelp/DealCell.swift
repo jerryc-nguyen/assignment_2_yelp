@@ -8,10 +8,22 @@
 
 import UIKit
 
+@objc protocol DealCellDelegate {
+    optional func dealCell(dealCell: DealCell, didChangeValue value: Bool)
+}
+
 class DealCell: UITableViewCell {
+    
+    @IBOutlet weak var switcher: UISwitch!
     
     static let ClassName:String = "DealCell"
     
+    weak var delegate: DealCellDelegate?
+    
+    @IBAction func onSwitchDeal(sender: UISwitch) {
+        self.delegate?.dealCell!(self, didChangeValue: sender.on)
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

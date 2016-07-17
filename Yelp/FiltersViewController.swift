@@ -12,9 +12,13 @@ import UIKit
     optional func filtersViewController(filtersViewController: FiltersViewController, didFiltersChanged value: [String: AnyObject])
 }
 
+let MetersPerMile: Float = 1609.344
+
 class FiltersViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    var isDealOnly: Bool = false
     
     var switchStates = [Int: Bool]()
     
@@ -27,9 +31,9 @@ class FiltersViewController: UIViewController {
     ]
     
     let sortByOptions: [NSDictionary] = [
-        ["name" : "Best match", "value": 1],
-        ["name" : "Distance", "value": 2],
-        ["name" : "Highest rated", "value": 3],
+        ["name" : "Best match", "value": YelpSortMode.BestMatched.rawValue],
+        ["name" : "Distance", "value": YelpSortMode.Distance.rawValue],
+        ["name" : "Highest rated", "value": YelpSortMode.HighestRated.rawValue],
     ]
     
     let sectionTitles: [Int: String] = [
@@ -84,6 +88,10 @@ class FiltersViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
         var filters = [String: AnyObject]()
         filters["categories"] = selectedCategories()
+        filters["distance"] = selectedDistance()
+        filters["isDeal"] = isDealOnly
+        filters["sortBy"] = selectedSortBy()
+            
         delegate?.filtersViewController!(self, didFiltersChanged: filters)
     }
 
@@ -266,6 +274,19 @@ class FiltersViewController: UIViewController {
         }
         return result
     }
+    
+    func selectedDistance() -> Double? {
+        let selectedDistance = distanceOptions[selectedDistanceIndex]["value"] as! Float
+        if selectedDistance == -1 {
+            return nil
+        }
+        let meters = Double(MetersPerMile) * Double(selectedDistance)
+        return meters
+    }
+    
+    func selectedSortBy() -> Int {
+        return sortByOptions[selectedSortIndex]["value"] as! Int
+    }
 }
 
 extension FiltersViewController : UITableViewDataSource {
@@ -300,7 +321,10 @@ extension FiltersViewController : UITableViewDataSource {
     
         switch (indexPath.section) {
         case 0:
-            return tableView.dequeueReusableCellWithIdentifier("DealCell") as! DealCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("DealCell") as! DealCell
+            cell.switcher.on = self.isDealOnly
+            cell.delegate = self
+            return cell
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier(DistanceTableViewCell.ClassName) as! DistanceTableViewCell
             let distanceItem = distanceOptions[indexPath.row]
@@ -397,3 +421,9 @@ extension FiltersViewController: SwitchCellDelegate {
     }
 }
 
+extension FiltersViewController: DealCellDelegate {
+    func dealCell(dealCell: DealCell, didChangeValue value: Bool) {
+        print("Filter got signal from DealCellDelegate", value)
+        isDealOnly = value
+    }
+}

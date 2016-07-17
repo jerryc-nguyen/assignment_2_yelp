@@ -27,6 +27,8 @@ class DistanceHeaderView: UIView {
         selectedItemBtn.clipsToBounds = true
         selectedItemBtn.layer.borderWidth = 1
         selectedItemBtn.layer.borderColor = UIColor.lightGrayColor().CGColor
+        
+        selectedItemBtn.titleEdgeInsets.left = 10 // add left padding for button title
     }
     
     // MARK: Init

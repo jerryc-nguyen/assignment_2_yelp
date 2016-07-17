@@ -165,6 +165,9 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vOq-89-Kf2">
                                                     <rect key="frame" x="250" y="18" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="onSwitchDeal:" destination="u0C-SQ-x0c" eventType="valueChanged" id="ALJ-eD-swF"/>
+                                                    </connections>
                                                 </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Has deal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wB4-mf-Xu1">
                                                     <rect key="frame" x="10" y="23" width="67" height="21"/>
@@ -180,6 +183,9 @@
                                                 <constraint firstAttribute="trailing" secondItem="vOq-89-Kf2" secondAttribute="trailing" constant="21" id="cPz-2N-Y3D"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="switcher" destination="vOq-89-Kf2" id="O5e-0g-fqn"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchCell" rowHeight="68" id="FSg-hL-XEY" customClass="SwitchCell" customModule="Yelp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="96" width="320" height="68"/>
