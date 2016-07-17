@@ -12,15 +12,23 @@ class BusinessesViewController: UIViewController {
     
     var businesses = [Business]()
     
+    var filteredValues = NSDictionary()
+    
+    @IBOutlet var searchBar: UISearchBar!
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.titleView = searchBar
         
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 120
+        
+        self.searchBar.delegate = self
+        self.searchBar.showsCancelButton = true
         
         Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
             if businesses != nil {
@@ -28,17 +36,6 @@ class BusinessesViewController: UIViewController {
                 self.tableView.reloadData()
             }
         })
-    
-/* Example of Yelp search with moreearch options specified
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
-        }
-*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,23 +52,28 @@ class BusinessesViewController: UIViewController {
         
         filtersVC.delegate = self
     }
+    
+    func performSearch(searchTerm: String) {
+        let filteredCategories = filteredValues["categories"] as? [String]
+        let selectedDistance = filteredValues["distance"] as? Int
+        let sortBy = (filteredValues["sortBy"] as? Int) ?? YelpSortMode.BestMatched.rawValue
+        let isDeal = (filteredValues["isDeal"] as? Int) == 1
+        
+        Business.searchWithTerm(searchTerm, sort: YelpSortMode(rawValue: sortBy), categories: filteredCategories, deals: isDeal, distanceInMeter: selectedDistance) { (businesses: [Business]!, error: NSError!) -> Void in
+            if businesses != nil {
+                self.businesses = businesses
+                self.tableView.reloadData()
+            }
+        }
+    }
 
 }
 
 extension BusinessesViewController : FiltersViewControllerDelegate {
     func filtersViewController(filtersViewController: FiltersViewController, didFiltersChanged value: [String : AnyObject]) {
         print("Received signal from filter controller: ", value)
-        
-        let filteredCategories = value["categories"] as? [String]
-        let selectedDistance = value["distance"] as? Int
-        let sortBy = value["sortBy"] as? Int
-        let isDeal = (value["isDeal"] as? Int) == 1
-        Business.searchWithTerm("Restaurants", sort: YelpSortMode(rawValue: sortBy!), categories: filteredCategories, deals: isDeal, distanceInMeter: selectedDistance) { (businesses: [Business]!, error: NSError!) -> Void in
-            if businesses != nil {
-                self.businesses = businesses
-                self.tableView.reloadData()
-            }
-        }
+        filteredValues = value
+        performSearch("")
     }
 }
 
@@ -86,5 +88,17 @@ extension BusinessesViewController : UITableViewDataSource, UITableViewDelegate 
         cell.business = businesses[indexPath.row]
 
         return cell
+    }
+}
+
+
+extension BusinessesViewController : UISearchBarDelegate {
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        performSearch(searchText)
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
 }
